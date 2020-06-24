@@ -1,9 +1,20 @@
 import { Router } from 'express';
 
+import UserController from './app/controllers/UserController';
+import SessionController from './app/controllers/SessionController';
+
+import authMiddleware from './app/middlewares/auth';
+import logRequest from './app/middlewares/logRequest';
+
 const routes = new Router();
 
-routes.get('/', (req, res) => {
-  return res.json({ message: "Hello World!"});
-});
+routes.use(logRequest);
+
+routes.post('/users', UserController.store);
+routes.post('/sessions', SessionController.store);
+
+routes.use(authMiddleware);
+
+routes.put('/users', UserController.update);
 
 export default routes;
