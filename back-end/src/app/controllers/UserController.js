@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import User from '../models/User';
-import { password } from '../../config/database';
 
 class UserController {
   async store(req, res) {
@@ -45,7 +44,7 @@ class UserController {
     if(!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
-    
+
     const { email, oldPassword } = req.body;
 
     const user = await User.findByPk(req.userId);
