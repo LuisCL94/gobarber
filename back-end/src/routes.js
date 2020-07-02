@@ -29,10 +29,12 @@ routes.get('/providers', ProviderController.list);
 
 routes.post('/appointments', AppointmentController.store);
 routes.get('/appointments', AppointmentController.list);
+routes.delete('/appointments/:id', AppointmentController.delete);
 
 routes.get('/schedule', ScheduleController.list);
 
 routes.get('/notifications', NotificationController.list);
+routes.put('/notifications/:id', NotificationController.update);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
