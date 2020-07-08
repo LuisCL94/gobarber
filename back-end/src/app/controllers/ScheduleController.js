@@ -6,7 +6,7 @@ import Appointment from '../models/Appointment';
 
 class ScheduleController {
   async list(req, res) {
-    const checkUserProvider = User.findOne({
+    const checkUserProvider = await User.findOne({
       where: { id: req.userId, provider: true },
     });
 
@@ -25,6 +25,14 @@ class ScheduleController {
           [Op.between]: [startOfDay(parseDate), endOfDay(parseDate)],
         },
       },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name'],
+        },
+      ],
+      order: ['date'],
     });
 
     return res.json(appointments);
