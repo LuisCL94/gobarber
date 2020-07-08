@@ -11,7 +11,7 @@ class CancellationMail {
     const { appointment } = data;
 
     console.log('queue working');
-    
+
     await Mail.sendMail({
       to: `${appointment.provider.name} <${appointment.provider.email}>`,
       subject: 'Agendamento cancelado',
@@ -30,6 +30,6 @@ class CancellationMail {
     });
     console.log('email sent');
   }
-} 
+}
 
 export default new CancellationMail();

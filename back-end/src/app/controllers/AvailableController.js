@@ -1,9 +1,9 @@
-import { 
-  startOfDay, 
-  endOfDay, 
-  setSeconds, 
-  setMinutes, 
-  setHours, format, 
+import {
+  startOfDay,
+  endOfDay,
+  setSeconds,
+  setMinutes,
+  setHours,
   format,
   isAfter,
 } from 'date-fns';
@@ -13,14 +13,14 @@ import Appointment from '../models/Appointment';
 class AvailableController {
   async index(req, res) {
     const { date } = req.query;
-    
-    if(!date) {
+
+    if (!date) {
       return res.status(400).json({ error: 'Invalid date' });
     }
 
     const searchDate = Number(date);
 
-    const appointments = await Appointment.findAll({ 
+    const appointments = await Appointment.findAll({
       where: {
         provider_id: req.params.providerId,
         canceled_at: null,
@@ -44,10 +44,10 @@ class AvailableController {
       '18:00',
       '19:00',
       '20:00',
-    ]
+    ];
 
-    const avaiable = schedule.map(time => {
-      const [ hour, minute ] = time.split(':');
+    const avaiable = schedule.map((time) => {
+      const [hour, minute] = time.split(':');
       const value = setSeconds(
         setMinutes(setHours(searchDate, hour), minute),
         0
@@ -57,9 +57,9 @@ class AvailableController {
         value: format(value, "yyyy-MM-dd'T'HH:mm:ssxxx"),
         available:
           isAfter(value, new Date()) &&
-          !appointments.find(a => format(a.date, 'HH:mm') === time),
-      }
-    })
+          !appointments.find((a) => format(a.date, 'HH:mm') === time),
+      };
+    });
 
     return res.json(avaiable);
   }

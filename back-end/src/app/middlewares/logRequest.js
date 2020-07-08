@@ -5,6 +5,6 @@ export default function logRequest(req, res, next) {
   console.time(logLabel);
 
   next();
-  
+
   console.timeEnd(logLabel);
 }

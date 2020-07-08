@@ -25,22 +25,22 @@ class AppointmentController {
               model: File,
               as: 'avatar',
               attributes: ['id', 'path', 'url'],
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     });
 
-    return res.json(appointments)
+    return res.json(appointments);
   }
 
   async store(req, res) {
     const schema = Yup.object().shape({
       provider_id: Yup.number().required(),
-      date: Yup.date().required()
-    })
+      date: Yup.date().required(),
+    });
 
-    if(!(await schema.isValid(req.body))) {
+    if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
@@ -50,21 +50,21 @@ class AppointmentController {
       where: { id: provider_id, provider: true },
     });
 
-    if(!isProvider) {
+    if (!isProvider) {
       return res
-      .status(401)
-      .json({ error: 'You can only create appointment with providers'});
+        .status(401)
+        .json({ error: 'You can only create appointment with providers' });
     }
 
-    if( provider_id === req.userId ) {
+    if (provider_id === req.userId) {
       return res
-      .status(401)
-      .json({ error: 'You cannot make a appointment with yourserlf'});
+        .status(401)
+        .json({ error: 'You cannot make a appointment with yourserlf' });
     }
 
     const hourStart = startOfHour(parseISO(date));
 
-    if(isBefore(hourStart, new Date())) {
+    if (isBefore(hourStart, new Date())) {
       return res.status(400).json({ error: 'Past dates are not permitted' });
     }
 
@@ -73,13 +73,13 @@ class AppointmentController {
         provider_id,
         canceled_at: null,
         date: hourStart,
-      }
+      },
     });
 
-    if(checkAvailability) {
+    if (checkAvailability) {
       return res
-      .status(400)
-      .json({ error: 'Appointment date is not available' });
+        .status(400)
+        .json({ error: 'Appointment date is not available' });
     }
 
     const appointment = await Appointment.create({
@@ -95,12 +95,12 @@ class AppointmentController {
       "'dia' dd 'de' MMMM', às' H:mm'h'",
       { locale: pt }
     );
-    
+
     await Notification.create({
       content: `Novo agendamento de ${user.name} para ${formattedDate}`,
       user: provider_id,
     });
-    
+
     return res.json(appointment);
   }
 
@@ -116,19 +116,19 @@ class AppointmentController {
           model: User,
           as: 'user',
           attributes: ['name'],
-        }
+        },
       ],
     });
 
-    if(appointment.user_id !== req.userId) {
+    if (appointment.user_id !== req.userId) {
       return res.status(401).json({
-        error: "You don't have permission to cancel this appointment"
-      })
+        error: "You don't have permission to cancel this appointment",
+      });
     }
 
     const dateWithSub = subHours(appointment.date, 2);
 
-    if(isBefore(dateWithSub, new Date())) {
+    if (isBefore(dateWithSub, new Date())) {
       return res.status(401).json({
         error: 'You can only cancel appointments 2 hours in advance',
       });
@@ -137,11 +137,11 @@ class AppointmentController {
     appointment.canceled_at = new Date();
 
     await appointment.save();
-    
+
     await Queue.add(CancelattionMail.key, {
       appointment,
-    })
-    
+    });
+
     return res.json(appointment);
   }
 }

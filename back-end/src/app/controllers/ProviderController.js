@@ -3,7 +3,7 @@ import File from '../models/File';
 
 class ProviderController {
   async list(req, res) {
-    const providers = await User.findAll({ 
+    const providers = await User.findAll({
       where: { provider: true },
       attributes: ['id', 'name', 'email', 'avatar_id'],
       include: [
@@ -11,10 +11,10 @@ class ProviderController {
           model: File,
           as: 'avatar',
           attributes: ['name', 'path', 'url'],
-        }
-      ] 
+        },
+      ],
     });
-    
+
     return res.json(providers);
   }
 }

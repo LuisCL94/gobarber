@@ -2,7 +2,7 @@ import Bee from 'bee-queue';
 import CancelattionMail from '../app/jobs/CancellationMail';
 import redisConfig from '../config/redis';
 
-const jobs = [ CancelattionMail ];
+const jobs = [CancelattionMail];
 
 class Queue {
   constructor() {
@@ -27,7 +27,7 @@ class Queue {
   }
 
   processQueue() {
-    jobs.forEach(job => {
+    jobs.forEach((job) => {
       const { bee, handle } = this.queues[job.key];
 
       bee.on('failed', this.handleFailure).process(handle);
