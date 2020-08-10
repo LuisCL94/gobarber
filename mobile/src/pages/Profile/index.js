@@ -35,7 +35,6 @@ export default function Profile() {
   }, [profile]);
 
   function handleSubmit() {
-    console.tron.error('Aee agora deu carai');
     dispatch(
       updateProfileRequest({
         name,

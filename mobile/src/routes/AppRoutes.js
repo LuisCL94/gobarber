@@ -1,34 +1,39 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import { RectButton } from 'react-native-gesture-handler';
 
 import Profile from '~/pages/Profile';
 import Dashboard from '~/pages/Dashboard';
 
 import New from '~/pages/New';
 
-const Tab = createBottomTabNavigator();
+const { Navigator, Screen } = createBottomTabNavigator();
 
 export default function AppRoutes() {
   return (
-    <Tab.Navigator
+    <Navigator
+      screenOptions={{
+        tabBarButton: (props) => <RectButton {...props} />,
+      }}
       tabBarOptions={{
+        resetOnBlur: true,
         keyboardHidesTabBar: true,
         activeTintColor: '#fff',
         inactiveTintColor: 'rgba(255,255,255,0.6)',
         labelStyle: {
           fontSize: 12,
+          paddingBottom: 5,
         },
         style: {
+          borderTopWidth: 0,
           backgroundColor: '#8d41a8',
-          paddingTop: 2,
-          paddingBottom: 5,
           height: 54,
         },
       }}
     >
-      <Tab.Screen
+      <Screen
         name="Dashboard"
         component={Dashboard}
         options={{
@@ -39,7 +44,7 @@ export default function AppRoutes() {
         }}
       />
 
-      <Tab.Screen
+      <Screen
         name="New"
         component={New}
         options={{
@@ -51,7 +56,7 @@ export default function AppRoutes() {
         }}
       />
 
-      <Tab.Screen
+      <Screen
         name="Profile"
         component={Profile}
         options={{
@@ -61,6 +66,6 @@ export default function AppRoutes() {
           ),
         }}
       />
-    </Tab.Navigator>
+    </Navigator>
   );
 }

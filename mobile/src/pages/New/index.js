@@ -9,11 +9,11 @@ import Confirm from '~/pages/New/Confirm';
 import SelectDateTime from '~/pages/New/SelectDateTime';
 import SelectProvider from '~/pages/New/SelectProvider';
 
-const Stack = createStackNavigator();
+const { Navigator, Screen } = createStackNavigator();
 
 export default function New({ navigation }) {
   return (
-    <Stack.Navigator
+    <Navigator
       screenOptions={{
         headerTransparent: true,
         headerTitleAlign: 'center',
@@ -23,7 +23,7 @@ export default function New({ navigation }) {
         },
       }}
     >
-      <Stack.Screen
+      <Screen
         name="SelectProvider"
         component={SelectProvider}
         options={{
@@ -40,7 +40,7 @@ export default function New({ navigation }) {
         }}
       />
 
-      <Stack.Screen
+      <Screen
         name="SelectDateTime"
         component={SelectDateTime}
         options={{
@@ -57,7 +57,22 @@ export default function New({ navigation }) {
         }}
       />
 
-      <Stack.Screen name="Confirm" component={Confirm} />
-    </Stack.Navigator>
+      <Screen
+        name="Confirm"
+        component={Confirm}
+        options={{
+          title: 'Confirmar agendamento',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SelectDateTime');
+              }}
+            >
+              <Icon name="chevron-left" size={20} color="#fff" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+    </Navigator>
   );
 }

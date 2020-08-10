@@ -6,13 +6,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from '~/pages/SignIn';
 import SignUp from '~/pages/SignUp';
 
-const Auth = createStackNavigator();
+const { Navigator, Screen } = createStackNavigator();
 
 export default function AuthRoutes() {
   return (
-    <Auth.Navigator screenOptions={{ headerShown: false }}>
-      <Auth.Screen name="SignIn" component={SignIn} />
-      <Auth.Screen name="SignUp" component={SignUp} />
-    </Auth.Navigator>
+    <Navigator screenOptions={{ headerShown: false }}>
+      <Screen name="SignIn" component={SignIn} />
+      <Screen name="SignUp" component={SignUp} />
+    </Navigator>
   );
 }

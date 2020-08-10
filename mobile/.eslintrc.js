@@ -35,7 +35,18 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'react/prop-types': [
       'error',
-      { ignore: ['navigation', 'color', 'data', 'onCancel'] },
+      {
+        ignore: [
+          'navigation',
+          'color',
+          'data',
+          'onCancel',
+          'date',
+          'setDate',
+          'route',
+          'isFocused',
+        ],
+      },
     ],
   },
   settings: {

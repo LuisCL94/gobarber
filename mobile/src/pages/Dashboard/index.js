@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { withNavigationFocus } from '@react-navigation/compat';
 import api from '~/services/api';
 
 import Background from '~/components/Background';
@@ -6,16 +7,19 @@ import Appointment from '~/components/Appointment';
 
 import { Container, Title, List } from './styles';
 
-function Dashboard() {
+function Dashboard({ isFocused, navigation }) {
   const [appointments, setAppointments] = useState([]);
 
+  async function loadAppointments() {
+    const response = await api.get('appointments');
+    setAppointments(response.data);
+  }
+
   useEffect(() => {
-    async function loadAppointments() {
-      const response = await api.get('appointments');
-      setAppointments(response.data);
+    if (isFocused) {
+      loadAppointments();
     }
-    loadAppointments();
-  }, []);
+  }, [isFocused, navigation]);
 
   async function handleCancel(id) {
     const response = await api.delete(`appointments/${id}`);
@@ -48,4 +52,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default withNavigationFocus(Dashboard);

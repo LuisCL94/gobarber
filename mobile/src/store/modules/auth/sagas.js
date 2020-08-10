@@ -1,7 +1,6 @@
 import { takeLatest, call, put, all, delay } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 
-// import history from '~/services/history';
 import api from '~/services/api';
 
 import { signInSuccess, signFailure } from './actions';
@@ -30,10 +29,7 @@ export function* signIn({ payload }) {
     yield delay(1000);
 
     yield put(signInSuccess(token, user));
-
-    // history.push('/dashboard');
   } catch (err) {
-    // console.tron.error(err);
     Alert.alert(
       'Falha na autentição',
       'Houve um erro no login, verifique seus dados'
@@ -51,9 +47,6 @@ export function* signUp({ payload }) {
       email,
       password,
     });
-
-    // toast.success(`${name} cadastrado com sucesso`);
-    // history.push('/');
   } catch (err) {
     Alert.alert(
       'Falha na autentição',
